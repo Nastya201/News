@@ -1,6 +1,9 @@
 <?php
 require("auth.php");
 require("header.php");
+require_once("classes/post.php");
+
+$post = new Post($link);
 ?>
 
 <div class="jumbotron">
@@ -13,19 +16,19 @@ require("header.php");
 <div class="container">
     <div class="row">
         <?php
-        $res = $link->query("select id, name, summary, article, picture_name, n_date from post order by n_date desc");
+        $allNews = $post->getAllList();
 
-            while ($news = $res->fetch()) { ?>
+        foreach($allNews as $value) { ?>
                 <div class="col-md-4">
-                    <div style="white-space:pre-wrap"><h3><?php echo $news['name']; ?></h3></div>
+                    <div style="white-space:pre-wrap"><h3><?php echo $value['name']; ?></h3></div>
                     <img class="featurette-image img-responsive center-block"
-                         src="Images\<?php echo $news['picture_name']; ?>"
+                         src="Images\<?php echo $value['picture_name']; ?>"
                          alt="Generic placeholder image" width=200px height=200px align="left">
                     <br clear="all"><br>
 
-                    <p><?php echo $news['summary']; ?></p>
+                    <p><?php echo $value['summary']; ?></p>
 
-                    <p><a class="btn btn-default" href="news.php?id=<?php echo $news['id'] ?>" role="button">Read
+                    <p><a class="btn btn-default" href="news.php?id=<?php echo $value['id'] ?>" role="button">Read
                             it &raquo;</a></p>
                 </div>
             <?php

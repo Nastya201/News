@@ -1,8 +1,7 @@
 <?php
-//
+
 class post
 {
-
     const TABLE_NAME = 'post';
     private $link;
     private $id;
@@ -13,6 +12,7 @@ class post
     private $image;
     private $view;
     private $lastList = array();
+    private $allList = array();
 
     public function __construct($link, $id = null, $name = '', $summary = '', $article = '', $date = null, $image = '', $view = '')
     {
@@ -59,6 +59,24 @@ class post
         }
 
         return $this->lastList;
+    }
+
+    public function getAllList()
+    {
+        return $this->allList();
+    }
+
+    private function allList ()
+    {
+
+        $sql = "select * from " . self::TABLE_NAME . " order by id desc";
+        $lastNews = $this->link->query($sql);
+
+        while ($row = $lastNews->fetch()) {
+            $this->allList[] = $row;
+        }
+
+        return $this->allList;
     }
 
     public function updateView()
