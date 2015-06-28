@@ -1,23 +1,14 @@
 <?php
     require_once "header.php";
     require_once "mysql_config.php";
+    require_once("../classes/post.php");
+
+    $post = new post($link);
 
     if(isset($_POST['name'])) {
 
-        $query = "INSERT INTO post (name, summary, article, n_date, picture_name)
-				 values ('" . $_POST[name] . "','" . $_POST[summary] . "','" . $_POST[article] . "','" . date("Y-m-d") . "','" . $_FILES['userfile']['name'] . "')";
-        $sql = $link->query($query);
-
-        $uploaddir = '..\Images/';
-
-        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploaddir .
-            $_FILES['userfile']['name'])) {
-            print "File is valid, and was successfully uploaded.";
-        } else {
-            print "There some errors!";
-        }
-
-       echo $_FILES['userfile']['name'];
+        $post->addArticle();
+        $post->uploadImage();
 
        ?> <div id="main">
           <div class="full_w">

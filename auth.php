@@ -11,11 +11,11 @@ if (isset($_GET['logout'])) {
 
 if (isset($_POST['login'])) {
 
-    $query = "select * from users where login='" . $_POST['login'] . "'";  // and password='".$_POST['password']."'";
+    $query = "select * from users where login='" . $_POST['login'] . "'";
     $res = $link->query($query);
 
     if ($row = $res->fetch()) {
-        if ($row['login'] == "creator" && password_verify($_POST['password'], $row['password']))//$row['password'] == "12345")
+        if ($row['login'] == "creator" && password_verify($_POST['password'], $row['password']))
             header('Location: cms/index.php', true);
         elseif (password_verify($_POST['password'], $row['password'])) {
             $_SESSION['login'] = $row['login'];

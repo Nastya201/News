@@ -1,5 +1,5 @@
 <?php
-// test
+
 class post
 {
     const TABLE_NAME = 'post';
@@ -13,6 +13,7 @@ class post
     private $view;
     private $lastList = array();
     private $allList = array();
+    private $uploaddir = '..\Images/';
 
     public function __construct($link, $id = null, $name = '', $summary = '', $article = '', $date = null, $image = '', $view = '')
     {
@@ -79,10 +80,43 @@ class post
         return $this->allList;
     }
 
+    public  function updateArticle () {
+
+        if (isset($_GET['id']))
+            $id = $_GET['id'];
+        else $id = $_POST['id'];
+
+        $sql_2 = "update " . self::TABLE_NAME . " set name='".$_POST['name']."', summary ='".$_POST['summary']."', article ='".$_POST['article']."' where id = ".$id;
+
+        $this->link->query($sql_2)->fetch();
+    }
+
     public function updateView()
     {
         $sql_1 = "update " . self::TABLE_NAME . " set view = view+1 where id = " . htmlspecialchars($_GET["id"]);
         $this->link->query($sql_1)->fetch();
+    }
+
+    public  function deleteArticle ($id) {
+        $sql = "delete from post where id = ".$id;
+        $this->link->query($sql);
+    }
+
+    public function addArticle() {
+        $query = "INSERT INTO post (name, summary, article, n_date, picture_name)
+				 values ('" . $_POST[name] . "','" . $_POST[summary] . "','" . $_POST[article] . "','" . date("Y-m-d") . "','" . $_FILES['userfile']['name'] . "')";
+        $this->link->query($query);
+    }
+
+    public  function  uploadImage() {
+
+        if (move_uploaded_file($_FILES['userfile']['tmp_name'], $this->uploaddir .
+            $_FILES['userfile']['name'])) {
+            print "File is valid, and was successfully uploaded.";
+        } else {
+            print "There some errors!";
+        }
+        echo $_FILES['userfile']['name'];
     }
 
     public function getId()

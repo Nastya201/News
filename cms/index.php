@@ -1,6 +1,9 @@
 <?php
     require  "header.php";
     require_once "mysql_config.php";
+    require_once("../classes/post.php");
+
+    $post = new Post($link);
 ?>
 
     <div id = "main">
@@ -25,10 +28,9 @@
 
                 <?php
 
-                $res = $link->query("select * from post order by n_date desc");
+                $allNews = $post->getAllList();
 
-
-                    while ($news = $res->fetch()) {
+                foreach($allNews as $news) {
                         echo "<tr>
                                 <td class=\"align-center\">".$news['id']."</td>
                                 <td>".$news['name']."</td>
